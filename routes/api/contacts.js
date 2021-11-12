@@ -5,8 +5,8 @@ const Joi = require("joi");
 
 const joiSchema = Joi.object({
   name: Joi.string().required(),
-  email: Joi.string().required(),
-  phone: Joi.number().required(),
+  email: Joi.string().email().required(),
+  phone: Joi.string().required(),
 });
 
 const {
@@ -54,9 +54,9 @@ router.get("/:contactId", async (req, res, next) => {
 router.post("/", async (req, res, next) => {
   try {
     const { error } = joiSchema.validate(req.body);
-    // if (error) {
-    //   throw new createError(400, "missing required name field");
-    // }
+    if (error) {
+      throw new createError(400, "missing required name field");
+    }
     console.log(req.body);
     const result = await addContact(req.body);
     res.status(201).json({
@@ -91,9 +91,9 @@ router.delete("/:contactId", async (req, res, next) => {
 router.put("/:contactId", async (req, res, next) => {
   try {
     const { error } = joiSchema.validate(req.body);
-    // if (error) {
-    //   throw new createError(400, "Missing fields");
-    // }
+    if (error) {
+      throw new createError(400, "Missing fields");
+    }
     const { contactId } = req.params;
     const result = await updateContact(contactId, req.body);
     console.log(result);

@@ -14,7 +14,7 @@ const listContacts = readData;
 const getContactById = async (contactId) => {
   const contacts = await readData();
   const [result] = contacts.filter(
-    (contact) => contact.id === Number(contactId)
+    (contact) => contact.id.toString() === contactId
   );
   if (!result) {
     return null;
@@ -24,7 +24,7 @@ const getContactById = async (contactId) => {
 
 const removeContact = async (contactId) => {
   const contacts = await readData();
-  const idx = contacts.findIndex((item) => item.id === Number(contactId));
+  const idx = contacts.findIndex((item) => item.id.toString() === contactId);
   if (idx === -1) {
     return null;
   }
@@ -43,7 +43,7 @@ const addContact = async ({ name, email, phone }) => {
 
 const updateContact = async (contactId, body) => {
   const contacts = await readData();
-  const idx = contacts.findIndex((item) => item.id === Number(contactId));
+  const idx = contacts.findIndex((item) => item.id.toString() === contactId);
   if (idx === -1) {
     return null;
   }
