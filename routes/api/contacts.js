@@ -50,26 +50,33 @@ router.get("/:contactId", async (req, res, next) => {
     next(error);
   }
 });
-
-router.post("/", async (req, res, next) => {
-  try {
+router.post(
+  "/",
+  (req, res, next) => {
     const { error } = joiSchema.validate(req.body);
     if (error) {
-      throw new createError(400, "missing required name field");
+      const newError = new CreateError(400, "missing required name field");
+      // const newError = new BadRequest(error.message);
+      next(newError);
     }
-    console.log(req.body);
-    const result = await addContact(req.body);
-    res.status(201).json({
-      status: "success",
-      code: 201,
-      data: {
-        result,
-      },
-    });
-  } catch (error) {
-    next(error);
+    next();
+  },
+  async (req, res, next) => {
+    try {
+      console.log(req.body);
+      const result = await addContact(req.body);
+      res.status(201).json({
+        status: "success",
+        code: 201,
+        data: {
+          result,
+        },
+      });
+    } catch (error) {
+      next(error);
+    }
   }
-});
+);
 
 router.delete("/:contactId", async (req, res, next) => {
   try {
