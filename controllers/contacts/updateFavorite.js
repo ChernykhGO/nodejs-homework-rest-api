@@ -11,7 +11,6 @@ const updateFavorite = async (req, res) => {
       new: true,
     }
   );
-  console.log(result);
   if (!result) {
     throw new NotFound(`Product with id=${contactId} not found`);
   }
