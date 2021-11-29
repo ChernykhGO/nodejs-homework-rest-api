@@ -1,3 +1,3 @@
-const { Contact } = require("./contact");
-
-module.exports = { Contact };
+const { Contact } = require('./contact')
+const { User } = require('./user')
+module.exports = { Contact, User }

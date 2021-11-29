@@ -1,5 +1,5 @@
-const { Schema, model } = require("mongoose");
-const Joi = require("joi");
+const { Schema, model } = require('mongoose')
+const Joi = require('joi')
 
 const contactSchema = Schema(
   {
@@ -20,22 +20,26 @@ const contactSchema = Schema(
       type: Boolean,
       enum: [true, false],
       required: true,
-      default: "false",
+      default: 'false',
+    },
+    owner: {
+      type: Schema.Types.ObjectId,
+      ref: 'user',
     },
   },
   { versionKey: false, timestamps: true }
-);
+)
 
 const joiContactSchema = Joi.object({
   name: Joi.string().required(),
   email: Joi.string().email().required(),
   phone: Joi.string().required(),
   favorite: Joi.boolean().required(),
-});
+})
 
-const Contact = model("contact", contactSchema);
+const Contact = model('contact', contactSchema)
 
 module.exports = {
   Contact,
   joiContactSchema,
-};
+}
