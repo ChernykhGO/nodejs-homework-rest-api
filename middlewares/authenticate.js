@@ -5,7 +5,7 @@ const jwt = require("jsonwebtoken");
 const { SECRET_KEY } = process.env;
 
 const authenticate = async (req, res, next) => {
-  //   console.log(req.headers.authorization);
+  console.log(req.headers.authorization);
   try {
     const [bearer, token] = req.headers.authorization.split(" ");
     if (bearer !== "Bearer") {
