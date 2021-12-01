@@ -5,8 +5,10 @@ const jwt = require("jsonwebtoken");
 const { SECRET_KEY } = process.env;
 
 const authenticate = async (req, res, next) => {
-  console.log(req.headers.authorization);
   try {
+    if (req.headers.authorization === undefined) {
+      throw new Unauthorized("Not authorized");
+    }
     const [bearer, token] = req.headers.authorization.split(" ");
     if (bearer !== "Bearer") {
       throw new Unauthorized("Not authorized");

@@ -11,7 +11,7 @@ const { joiContactSchema } = require("../../model/contact");
 
 router.get("/", authenticate, controllerWrapper(ctrl.getAll));
 
-router.get("/:contactId", controllerWrapper(ctrl.getById));
+router.get("/:contactId", authenticate, controllerWrapper(ctrl.getById));
 
 router.post(
   "/",
@@ -20,12 +20,17 @@ router.post(
   controllerWrapper(ctrl.add)
 );
 
-router.patch("/:contactId/favorite", controllerWrapper(ctrl.updateFavorite));
+router.patch(
+  "/:contactId/favorite",
+  authenticate,
+  controllerWrapper(ctrl.updateFavorite)
+);
 
-router.delete("/:contactId", controllerWrapper(ctrl.removeById));
+router.delete("/:contactId", authenticate, controllerWrapper(ctrl.removeById));
 
 router.put(
   "/:contactId",
+  authenticate,
   validation(joiContactSchema),
   controllerWrapper(ctrl.updateById)
 );
