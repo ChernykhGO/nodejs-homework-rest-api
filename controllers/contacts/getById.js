@@ -2,7 +2,6 @@ const { Contact } = require("../../model/index");
 
 const { NotFound } = require("http-errors");
 const getById = async (req, res, next) => {
-  console.log(req.params);
   const { id } = req.params;
   const result = await Contact.findOne({
     id,
