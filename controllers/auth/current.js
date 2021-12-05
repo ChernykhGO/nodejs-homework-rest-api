@@ -8,6 +8,7 @@ const current = async (req, res) => {
     data: {
       email: currentUser.email,
       subscription: currentUser.subscription,
+      avatarURL: currentUser.avatarURL,
     },
   });
 };
