@@ -2,6 +2,10 @@ const { Conflict } = require("http-errors");
 const { User } = require("../../model");
 const gravatar = require("gravatar");
 
+const fs = require("fs/promises");
+const path = require("path");
+const avatarDir = path.join(__dirname, "../../public/avatars");
+
 const register = async (req, res) => {
   const { email, password } = req.body;
 
@@ -18,6 +22,9 @@ const register = async (req, res) => {
   const newUser = new User({ email, avatarURL });
   newUser.setPassword(password);
   await newUser.save();
+
+  const avatarFolder = path.join(avatarDir, String(newUser._id));
+  await fs.mkdir(avatarFolder);
 
   res.status(201).json({
     status: "succes",
