@@ -9,6 +9,7 @@ const current = async (req, res) => {
       email: currentUser.email,
       subscription: currentUser.subscription,
       avatarURL: currentUser.avatarURL,
+      verificationToken: currentUser.verificationToken,
     },
   });
 };
