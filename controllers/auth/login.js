@@ -7,8 +7,12 @@ const { SECRET_KEY } = process.env;
 const login = async (req, res) => {
   const { email, password } = req.body;
   const user = await User.findOne({ email });
-  if (!user || user.verify || !user.comparePassword(password)) {
+  if (!user || !user.comparePassword(password)) {
     throw new BadRequest("Wrong email or password");
+  }
+
+  if (!user.verify) {
+    throw new BadRequest("User is not verified");
   }
 
   const payload = {
