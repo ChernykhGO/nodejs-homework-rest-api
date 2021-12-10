@@ -1,10 +1,12 @@
 const { Conflict } = require("http-errors");
 const { User } = require("../../model");
 const gravatar = require("gravatar");
+const crypto = require("crypto");
 
 const fs = require("fs/promises");
 const path = require("path");
 const avatarDir = path.join(__dirname, "../../public/avatars");
+const { sendMail } = require("../../helpers");
 
 const register = async (req, res) => {
   const { email, password } = req.body;
@@ -19,9 +21,18 @@ const register = async (req, res) => {
     protocol: "https",
   });
 
-  const newUser = new User({ email, avatarURL });
+  const verificationToken = crypto.randomUUID();
+
+  const newUser = new User({ email, avatarURL, verificationToken });
   newUser.setPassword(password);
   await newUser.save();
+
+  const mail = {
+    to: email,
+    subject: "Подтверждение регистрации",
+    html: `<a href="http://localhost:3000/api/auth/verify/${verificationToken}">Нажмите для подтверждения регистрации</a>`,
+  };
+  await sendMail(mail);
 
   const avatarFolder = path.join(avatarDir, String(newUser._id));
   await fs.mkdir(avatarFolder);
